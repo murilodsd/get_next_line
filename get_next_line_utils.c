@@ -6,7 +6,7 @@
 /*   By: mde-souz <mde-souz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 07:30:13 by mde-souz          #+#    #+#             */
-/*   Updated: 2024/05/14 06:50:15 by mde-souz         ###   ########.fr       */
+/*   Updated: 2024/05/14 19:30:20 by mde-souz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 		return (j + size);
 	return (i + j);
 }
+
 char	*ft_strcpy(char *dest, char *src)
 {
 	int	i;
