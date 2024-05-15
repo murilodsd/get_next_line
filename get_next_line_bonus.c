@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mde-souz <mde-souz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:37:07 by mde-souz          #+#    #+#             */
-/*   Updated: 2024/05/15 20:51:45 by mde-souz         ###   ########.fr       */
+/*   Updated: 2024/05/15 20:47:03 by mde-souz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,21 +93,26 @@ char	*get_next_line(int fd)
 
 int main(void)
 {
-	int	fd0,fd1,fd2;
+	int	fd,fd2;
 	char	*line;
 	
- 	fd0 = open("41_with_nl", O_RDWR);
- 	fd1 = open("42_with_nl", O_RDWR);
- 	fd2 = open("43_with_nl", O_RDWR);
-	printf("%s",get_next_line(1000));
-	printf("%s",get_next_line(fd0));
-	printf("%s",get_next_line(1001));
-	printf("%s",get_next_line(fd1));
-	printf("%s",get_next_line(1002));
-	printf("%s",get_next_line(fd2));
-	printf("%s",get_next_line(1003));
-	printf("%s",get_next_line(fd0));
-	printf("%s",get_next_line(1004));
+ 	fd = open("meu_texto.txt", O_RDONLY);
+ 	fd2 = open("texto_uma_linha.txt", O_RDONLY);
+	line = get_next_line(fd);
+	printf("%s",line);
+	free (line);
+	line = get_next_line(fd2);
+	printf("%s",line);
+	free (line);
+	line = get_next_line(fd);
+	printf("%s",line);
+	free (line);
+	line = get_next_line(fd2);
+	printf("%s",line);
+	free (line);
+	line = get_next_line(fd);
+	printf("%s",line);
+	free (line);
 	//printf("%s",get_next_line(fd));
 	//printf("%s",get_next_line(fd));
 	//printf("%s",get_next_line(fd));
@@ -128,8 +133,7 @@ int main(void)
 	//bytes_read = read(fd,buffer,32);
 	//printf("%s\n",buffer);
 	//printf("%li\n",bytes_read);
-	close(fd0);
-	close(fd1);
+	close(fd);
 	close(fd2);
 	return 0;
 } */
