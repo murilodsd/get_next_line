@@ -6,7 +6,7 @@
 /*   By: mde-souz <mde-souz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:37:07 by mde-souz          #+#    #+#             */
-/*   Updated: 2024/05/15 20:51:45 by mde-souz         ###   ########.fr       */
+/*   Updated: 2024/05/17 11:00:15 by mde-souz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*ft_insert_into_line(char **line, char *buffer)
 
 	s_buffer_cat = ft_strlen(buffer);
 	if (ft_strchr(buffer, '\n'))
-		s_buffer_cat += - ft_strlen(ft_strchr(buffer, '\n')) + 1;
+		s_buffer_cat += 1 - ft_strlen(ft_strchr(buffer, '\n'));
 	s_cat = ft_strlen(*line) + s_buffer_cat;
 	tmp = *line;
 	*line = (char *)ft_calloc(sizeof(char), s_cat + 1);

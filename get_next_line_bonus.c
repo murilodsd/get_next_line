@@ -6,11 +6,23 @@
 /*   By: mde-souz <mde-souz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:37:07 by mde-souz          #+#    #+#             */
-/*   Updated: 2024/05/15 20:47:03 by mde-souz         ###   ########.fr       */
+/*   Updated: 2024/05/17 13:33:42 by mde-souz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
+
+void	*ft_free_memmory(char **buffer, char *ptr)
+{
+	if (buffer)
+	{
+		free(*buffer);
+		*buffer = NULL;
+	}
+	if (ptr)
+		free(ptr);
+	return (NULL);
+}
 
 void	*ft_insert_into_line(char **line, char *buffer)
 {
@@ -21,15 +33,14 @@ void	*ft_insert_into_line(char **line, char *buffer)
 
 	s_buffer_cat = ft_strlen(buffer);
 	if (ft_strchr(buffer, '\n'))
-		s_buffer_cat += - ft_strlen(ft_strchr(buffer, '\n')) + 1;
+		s_buffer_cat += 1 - ft_strlen(ft_strchr(buffer, '\n'));
 	s_cat = ft_strlen(*line) + s_buffer_cat;
+	if (!s_cat)
+		return (*line);
 	tmp = *line;
 	*line = (char *)ft_calloc(sizeof(char), s_cat + 1);
 	if (!*line)
-	{
-		free(tmp);
-		return (NULL);
-	}
+		return (ft_free_memmory(NULL, tmp));
 	ft_strcpy(*line, tmp);
 	free(tmp);
 	i = 0;
@@ -37,7 +48,7 @@ void	*ft_insert_into_line(char **line, char *buffer)
 		i++;
 	while (*buffer && *buffer != '\n')
 		(*line)[i++] = *buffer++;
-	(*line)[i++] = *buffer++;
+	(*line)[i] = *buffer;
 	return (*line);
 }
 
@@ -62,28 +73,31 @@ void	ft_move_buffer(char *buffer)
 char	*get_next_line(int fd)
 {
 	ssize_t		bytes_read;
-	static char	buffer[BUFFER_SIZE + 1];
+	static char	*buffer[MAX_FD];
 	char		*line;
 
+	if (fd < 0 || fd > MAX_FD || BUFFER_SIZE < 0)
+		return (NULL);
+	if (!buffer[fd])
+		buffer[fd] = (char *)ft_calloc(sizeof(char), BUFFER_SIZE + 1);
+	if (!buffer[fd])
+		return (NULL);
 	line = (char *)ft_calloc(sizeof(char), 1);
 	if (!line)
-		return (NULL);
-	if (!ft_insert_into_line(&line, buffer))
-		return (NULL);
-	ft_move_buffer(buffer);
+		return (ft_free_memmory(&buffer[fd], NULL));
+	if (!ft_insert_into_line(&line, buffer[fd]))
+		return (ft_free_memmory(&buffer[fd], NULL));
+	ft_move_buffer(buffer[fd]);
 	while (!ft_strchr(line, '\n'))
 	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		bytes_read = read(fd, buffer[fd], BUFFER_SIZE);
 		if (bytes_read == 0 && *line != '\0')
 			return (line);
 		else if (bytes_read == 0 || bytes_read == -1)
-		{
-			free(line);
-			return (NULL);
-		}
-		if (!ft_insert_into_line(&line, buffer))
-			return (NULL);
-		ft_move_buffer(buffer);
+			return (ft_free_memmory(&buffer[fd], line));
+		if (!ft_insert_into_line(&line, buffer[fd]))
+			return (ft_free_memmory(&buffer[fd], NULL));
+		ft_move_buffer(buffer[fd]);
 	}
 	return (line);
 }
@@ -93,26 +107,18 @@ char	*get_next_line(int fd)
 
 int main(void)
 {
-	int	fd,fd2;
-	char	*line;
+	int	fd0,fd1,fd2;
 	
- 	fd = open("meu_texto.txt", O_RDONLY);
- 	fd2 = open("texto_uma_linha.txt", O_RDONLY);
-	line = get_next_line(fd);
-	printf("%s",line);
-	free (line);
-	line = get_next_line(fd2);
-	printf("%s",line);
-	free (line);
-	line = get_next_line(fd);
-	printf("%s",line);
-	free (line);
-	line = get_next_line(fd2);
-	printf("%s",line);
-	free (line);
-	line = get_next_line(fd);
-	printf("%s",line);
-	free (line);
+ 	//fd0 = open("read_error.txt", O_RDWR);
+ 	//fd2 = open("lines_around_10.txt", O_RDWR);
+	//printf("%s",get_next_line(fd0));
+	//printf("%s",get_next_line(fd2));
+	//printf("%s",get_next_line(fd0));
+	//printf("%s",get_next_line(fd2));
+
+	fd1 = open("empty", O_RDWR);
+	printf("%s",get_next_line(fd1));
+	printf("%s",get_next_line(fd1));
 	//printf("%s",get_next_line(fd));
 	//printf("%s",get_next_line(fd));
 	//printf("%s",get_next_line(fd));
@@ -133,7 +139,8 @@ int main(void)
 	//bytes_read = read(fd,buffer,32);
 	//printf("%s\n",buffer);
 	//printf("%li\n",bytes_read);
-	close(fd);
-	close(fd2);
+	//close(fd0);
+	close(fd1);
+	//close(fd2);
 	return 0;
 } */
