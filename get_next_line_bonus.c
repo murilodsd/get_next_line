@@ -6,7 +6,7 @@
 /*   By: mde-souz <mde-souz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:37:07 by mde-souz          #+#    #+#             */
-/*   Updated: 2024/05/17 20:13:48 by mde-souz         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:10:34 by mde-souz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	ft_move_buffer(char *buffer)
 
 int	check_buffer_and_fd(char **buffer, int fd)
 {
-	if (fd < 0 || fd > MAX_FD || BUFFER_SIZE < 0)
+	if (fd < 0 || fd > MAX_FD || BUFFER_SIZE <= 0)
 		return (0);
 	if (!buffer[fd])
 		buffer[fd] = (char *)ft_calloc(sizeof(char), BUFFER_SIZE + 1);

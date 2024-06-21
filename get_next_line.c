@@ -6,7 +6,7 @@
 /*   By: mde-souz <mde-souz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:37:07 by mde-souz          #+#    #+#             */
-/*   Updated: 2024/05/17 11:00:15 by mde-souz         ###   ########.fr       */
+/*   Updated: 2024/05/20 17:25:29 by mde-souz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,20 @@ void	ft_move_buffer(char *buffer)
 	}
 }
 
+void	*ft_free_memmory(char *ptr)
+{
+	free(ptr);
+	return (NULL);
+}
+
 char	*get_next_line(int fd)
 {
 	ssize_t		bytes_read;
 	static char	buffer[BUFFER_SIZE + 1];
 	char		*line;
 
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (0);
 	line = (char *)ft_calloc(sizeof(char), 1);
 	if (!line)
 		return (NULL);
@@ -77,10 +85,7 @@ char	*get_next_line(int fd)
 		if (bytes_read == 0 && *line != '\0')
 			return (line);
 		else if (bytes_read == 0 || bytes_read == -1)
-		{
-			free(line);
-			return (NULL);
-		}
+			return (ft_free_memmory(line));
 		if (!ft_insert_into_line(&line, buffer))
 			return (NULL);
 		ft_move_buffer(buffer);
